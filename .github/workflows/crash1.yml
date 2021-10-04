@@ -1,0 +1,16 @@
+name: HW1Test
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Crash1
+      run:  gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 Part2/crash1.gft
+   
