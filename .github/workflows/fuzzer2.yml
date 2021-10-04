@@ -1,0 +1,16 @@
+name: fuzzer2
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: fuzzer2
+      run: gcc -o giftcardreader Part3/giftcardreaderfixed.c && ./giftcardreader 1 Part3/fuzzer2.gft
+   
