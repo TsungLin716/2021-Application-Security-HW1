@@ -1,0 +1,17 @@
+name: cov1
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: cov1
+      run: gcc -fprofile-arcs -ftest-coverage -o giftcardreader Part3/giftcardreaderfixed.c && ./giftcardreader 1 Part3/cov1.gft
+ 
+    
