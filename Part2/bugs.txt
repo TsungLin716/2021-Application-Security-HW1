@@ -1,0 +1,47 @@
+crash1.gft: 
+  First, I compiled the example gift card file with giftcardreader.c to see what is going on with these codes. Then, I realized that when we compile the giftcardwriter it will generate a binary gift card for reader to read. That’s why we compile gft file and giftcardreader.c.  
+
+  Second, I looked at the giftcardreader.c to see if there is anything suspicious. I started with searching the whole code with the key word “malloc” to see if there is something wrong with the memory management. Then, I found that when passing num_bytes for file boundaries, it does not specify the type or size. I took a look into it and I found nothing wrong with it. However, I found out that the malloc() will take unsigned int(size_t) to allocate the memory but num_bytes is an integer. Hence, when passing a negative value, it will screw up the memory location for fread() to read as the beginning of the file. I changed the num_bytes in the giftcardwriter file from 116 to –999. Fortunately, the crash generated!!~ 
+
+  To fix this, I add an if condition to check if the num_bytes read in is smaller than 0, If it does then return NULL to stop the program. Furthermore, in the main() I checked if the return value is NULL or not so that I can stop the program when getting negative value of num_bytes.
+ 
+
+
+
+crash2.gft: 
+For this crash, I was aiming at buffer overflow. From the clue which professor gave us is that we can take a look at animate(). Then, I found something interesting with the array regs[]. 
+ 
+So, the array regs[] is already initialized with the size of 16. What if I tried to put something outside the size of this array? First, I tried to see where regs[] is used, then I found it in case0x01 so I started to investigate from there.
+ 
+I had no clue at how to enter the animate() so I walked through the code to see if there is any function or section related to it, then I found it inside the print_gift_card_info function. 
+ 
+I changed the type_of_record in giftcardexamplewrite.c to 3 so that I can pass message and program value into animate(). After that, I created a structure for gift_card_program and a function for me to pass those values. 
+ 
+I first specified the first byte for program value to enter case 0x01, then I passed the second byte as arg1 value to be the index in regs[], I looked into the animate() and see that arg1 is the value of *(pc+1), so for each program value is declared as 128 bytes, so I count from 0, which is 127, and then I tried the value with negative(before the buffer) to make sure that we can cause the crash. 
+ 
+
+
+
+
+
+
+
+
+hang.gft: 
+For the hang, I also took a look at animate() and found a obvious part which can cause an infinite loop which is the if condition at the bottom. 
+ 
+Basically if I could make pc to be smaller than program+256 then I can make the program to stuck here and not break. From crash2, I learned that pc is from the program value which I passed in from structure gift_card_program. So I basically just used the same code from crash2 and do some adjustments.
+ 
+I noticed that arg1 is char which the value is from –128 to 127 and pc is unsigned char which is from 0 to 255. So basically no matter what I assigned the number with, it will be converted to the range within char, which will never pass the if condition hence the infinite loop, I tried to compile and it works.
+
+To fix this, I just changed the arg1 value type from char to unsigned char and solved the problem.
+
+
+
+
+
+
+
+
+ 
+ 

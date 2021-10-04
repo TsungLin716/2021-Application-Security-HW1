@@ -1,0 +1,17 @@
+cov1.gft:
+
+I choose crash1.gft to do the coverage, so I put an if condition to make sure that num->bytes is not a negative value, if it does then return null to actually not print out anything. The coverage of this is about 8.00%. So what I do is that I added an if condition inside the writegc() in the giftcardwriter file which is if(examplegc.num_bytes > 0) for fwrite(). To do this, the giftcardfile will never pass a negative value in num_bytes so that I can pass the if condition inside the giftcardreader, the coverage of this test case become to 33.7%.
+
+
+cov2.gft:
+
+I choose hang.gft to do the coverage. In this case, I changed the number_of_gift_card_records inside the giftcardwriter from 1 to 2. By doing this, I can loop twice for the for loop inside the print_gift_card_info() inside the giftcardreader hence printing twice. By doing this, I am able to cover another else if condition for gcrd_ptr->type_of_record ==2, the coverage of this test case rise from 51% to 53.9%. 
+
+
+fuzzer1.gft:
+
+So this one is a hang, I noticed not only case 0x09 in the animate() cause the hang but 0x010. Then I observed that zf in this case is just 0 when initialized so it does not matter at all. Furthermore, it also pass arg1 into pc which can cause the hang at the last if condition which check if pc is greater than program + 256, so I tried what I do for fixing hang.gft, I changed the type of arg1 from char to unsigned char in this case so that it will pass the if condition and hence fixed the infinite loop.
+
+
+fuzzer2.gft:
+This one is a crash and it happens at the place where I didn't notice before. It is happening at the print_gift_card_info() and get_gift_card_value(). This one is tough, I think for a while and I noticed that professor said "There might be some parts of program that didn't cover but now its covered by buzzer" in the README file, so basically I kept ignoring about the json file, the pc in animate() will also passed into these function with printing txt and json file at the same time which cause the crash, so I changed pc value to 0 and it works.
