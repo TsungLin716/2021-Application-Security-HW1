@@ -1,0 +1,16 @@
+name: hangFixed
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: hangFixed
+      run: gcc -o giftcardreader Part2/giftcardreaderfixed.c && ./giftcardreader 1 Part2/hang.gft
+   
