@@ -1,0 +1,16 @@
+name: fuzzer1Fixed
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: fuzzer1Fixed
+      run: gcc -o giftcardreader Part3/giftcardreaderfixed.c && ./giftcardreader 1 Part3/fuzzer1.gft
+   
