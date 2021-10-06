@@ -12,5 +12,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: fuzzer2
-      run: gcc -o giftcardreader Part3/giftcardreaderfixed.c && ./giftcardreader 1 Part3/fuzzer2.gft
+      run: gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 Part3/fuzzer2.gft
    
