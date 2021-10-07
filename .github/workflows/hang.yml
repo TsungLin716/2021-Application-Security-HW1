@@ -12,5 +12,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Hang
-      run: gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 Part2/hang.gft
+      run: gcc -o giftcardreader giftcardreader.c && timeout 30s ./giftcardreader 1 Part2/hang.gft
     
